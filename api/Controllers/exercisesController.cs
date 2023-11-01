@@ -57,7 +57,8 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Exercise value)
         {
-
+            ExerciseUtility utility2 = new ExerciseUtility();
+            utility2.handlePin5(value);
         }
 
         // DELETE: api/exercises/5

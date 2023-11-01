@@ -23,7 +23,11 @@ namespace api.Models
             {
                 myExercises.Add(new Exercise
                 {
-                    Title = rdr.GetString(1)
+                    Id = rdr.GetInt32(0),
+                    Title = rdr.GetString(1),
+                    Distance = rdr.GetString(2),
+                    Day = rdr.GetString(3),
+                    Pinned = rdr.GetBoolean("pinned")
                 });
             }
             con.Close();
@@ -40,14 +44,33 @@ namespace api.Models
             // 
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.CommandText = @"Insert INTO exercises(Title) VALUES(@title)";
+            cmd.CommandText = @"Insert INTO exercises(Title,Distance,Day,Pinned) VALUES(@title,@distance,@day,@pinned)";
             cmd.Parameters.AddWithValue("@title", exercise.Title);
+            cmd.Parameters.AddWithValue("@distance", exercise.Distance);
+            cmd.Parameters.AddWithValue("@day", exercise.Day);
+            cmd.Parameters.AddWithValue("@pinned", exercise.Pinned);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
             Console.WriteLine("Itsworking");
 
 
+        }
+
+        public void handlePin5(Exercise exercise)
+        {
+            ConnectionString db = new ConnectionString();
+            using var con = new MySqlConnection(db.cs);
+            string stm = @"Select * from exercises;";
+            con.Open();
+
+            using var cmd = new MySqlCommand(stm, con);
+            cmd.CommandText = @"UPDATE exercises SET pinned = !pinned WHERE exerciseId = @id";
+
+            cmd.Parameters.AddWithValue("@id", exercise.Id);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
 
     }

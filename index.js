@@ -16,7 +16,6 @@ async function handleOnLoad() {
       <label for="distance">Distance:</label><br>
       <input type="text" id="distance" name="distance"> <br>
   
-  
       <label for="day">Day:</label><br>
       <input type="text" id="day" placeholder="YYYY-MM-DD" name="day"> <br>
 
@@ -67,20 +66,21 @@ function populateTable() {
     // if (exercise.Deleted) {
     //   return
     // }
-    // let pinText = "";
+    let pinText = "";
 
-    // if (exercise.Pinned == false) {
-    //   pinText = "Pin";
-    // }
-    // else {
-    //   pinText = "UnPin";
-    // }
+    if (exercise.Pinned == false) {
+      pinText = "Pin";
+    }
+    else {
+      pinText = "UnPin";
+    }
 
     html += `<tr>
         <td>${exercise.id}</td>
         <td>${exercise.title}</td>
-        <td>${exercise.Distance}</td>
-        <td>${exercise.Day}</td>
+        <td>${exercise.distance}</td>
+        <td>${exercise.day}</td>
+        <td><button id = "myButton-${exercise.id}" onclick="handlePin1('${exercise.id}')">Pin</button> </td>
         
         
       </tr> `
@@ -91,44 +91,46 @@ function populateTable() {
   document.getElementById('tableBody').innerHTML = html;
 }
 
-// function handlePin(exerciseID) {
-//     // let y = "myButton-" + exerciseID;
-//     // console.log(exerciseID)
-//     // var x = document.getElementById(y);
+async function handlePin1(id) {
+
+  myExercises.forEach(function (exercise) {
+    if (exercise.id == id) {
+      exercise.Pinned = !exercise.Pinned;
+      console.log(exercise);
+      handlePin2(exercise);
+
+    }
+  })
 
 
 
-//     myExercises.forEach(function(exercise){
-//         //console.log(exercise.Pinned)
-//         if(exercise.ExerciseID === exerciseID)
-//         {
-//             exercise.Pinned = !exercise.Pinned;
-//             console.log(exercise.Pinned)
-//         }
+}
 
-//     // if (x.innerHTML === "Pin") {
-//     //   x.innerHTML = "UnPin";
-//     // } else {
-//     //   x.innerHTML = "Pin";
-//     // }
+async function handlePin2(exercise) {
 
-//     localStorage.setItem('myExercises', JSON.stringify(myExercises));
+  await fetch(url + `/${exercise.id}`, {
+    method: "PUT",
+    body: JSON.stringify(exercise),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  });
+  populateTable();
 
-//     populateTable()
-// })
+}
 
-//   }
+
 
 
 async function handleExerciseAdd() {
   //let id = generateExerciseID();
   let exercise = {
-    // Pinned: false, 
+    Pinned: false,
     // Deleted: false, 
 
-    Title: document.getElementById('title').value
-    // Distance: document.getElementById('distance').value,
-    // Day: document.getElementById('day').value
+    Title: document.getElementById('title').value,
+    Distance: document.getElementById('distance').value,
+    Day: document.getElementById('day').value
   };
 
 
