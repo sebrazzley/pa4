@@ -63,12 +63,12 @@ function populateTable() {
               <th style="width:15%">---</th>
             </tr>`;
   myExercises.forEach(function (exercise) {
-    // if (exercise.Deleted) {
-    //   return
-    // }
+    if (exercise.deleted) {
+      return
+    }
     let pinText = "";
 
-    if (exercise.Pinned == false) {
+    if (exercise.pinned == false) {
       pinText = "Pin";
     }
     else {
@@ -80,8 +80,7 @@ function populateTable() {
         <td>${exercise.title}</td>
         <td>${exercise.distance}</td>
         <td>${exercise.day}</td>
-        <td><button id = "myButton-${exercise.id}" onclick="handlePin1('${exercise.id}')">Pin</button> </td>
-        
+        <td><button onclick="handlePin1('${exercise.id}')">${pinText}</button><button onclick="handleDelete('${exercise.id}')">Delete</button></td>
         
       </tr> `
   })
@@ -94,20 +93,18 @@ function populateTable() {
 async function handlePin1(id) {
 
   myExercises.forEach(function (exercise) {
+
     if (exercise.id == id) {
-      exercise.Pinned = !exercise.Pinned;
-      console.log(exercise);
+      exercise.pinned = !exercise.pinned;
       handlePin2(exercise);
 
     }
   })
-
-
-
 }
 
 async function handlePin2(exercise) {
 
+  console.log(exercise)
   await fetch(url + `/${exercise.id}`, {
     method: "PUT",
     body: JSON.stringify(exercise),
@@ -115,24 +112,20 @@ async function handlePin2(exercise) {
       "Content-type": "application/json; charset=UTF-8"
     }
   });
+  location.reload();
   populateTable();
 
 }
 
-
-
-
 async function handleExerciseAdd() {
   //let id = generateExerciseID();
   let exercise = {
-    Pinned: false,
-    // Deleted: false, 
-
     Title: document.getElementById('title').value,
     Distance: document.getElementById('distance').value,
-    Day: document.getElementById('day').value
+    Day: document.getElementById('day').value,
+    pinned: false,
+    deleted: false
   };
-
 
   await fetch(url, {
     method: "POST",
@@ -140,37 +133,48 @@ async function handleExerciseAdd() {
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }
-  })
+  });
 
-  // myExercises.push(exercise);
-  // console.log(myExercises)
-  // localStorage.setItem('myExercises', JSON.stringify(myExercises));
+
+  //   // myExercises.push(exercise);
+  //   // console.log(myExercises)
+  //   // localStorage.setItem('myExercises', JSON.stringify(myExercises));
   location.reload();
   populateTable();
 }
 
-//Watch video on jeff
-// function handleExerciseDelete(id){
-//     //console.log(exercise.ExerciseID)
-//     myExercises.forEach(function(exercise){
-//         //console.log(exercise.ExerciseID)
-//         if(exercise.ExerciseID === id)
-//         {
-//             exercise.Deleted = !exercise.Deleted;
-//         }
-//     })
 
-//     // myExercises = myExercises.filter(exercise => exercise.ExerciseID != id);
-//     localStorage.setItem('myExercises', JSON.stringify(myExercises));
-//     populateTable();
-// }
-function generateExerciseID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0;
-    const v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
+
+// //Watch video on jeff
+function handleDelete(id) {
+
+  myExercises.forEach(function (exercise) {
+    //console.log(exercise.ExerciseID)
+    if (exercise.id == id) {
+      exercise.deleted = !exercise.deleted;
+      handleDelete2(exercise);
+    }
+
+  })
+
 }
+
+async function handleDelete2(exercise) {
+
+  console.log(exercise)
+  await fetch(url + `/${exercise.id}`, {
+    method: "DELETE",
+    body: JSON.stringify(exercise),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  });
+  location.reload();
+  populateTable();
+
+
+}
+
 
 async function ExerciseList() {
   let response = await fetch(url);

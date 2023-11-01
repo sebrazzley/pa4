@@ -27,7 +27,9 @@ namespace api.Models
                     Title = rdr.GetString(1),
                     Distance = rdr.GetString(2),
                     Day = rdr.GetString(3),
-                    Pinned = rdr.GetBoolean("pinned")
+                    pinned = rdr.GetBoolean(4),
+                    deleted = rdr.GetBoolean(5)
+
                 });
             }
             con.Close();
@@ -44,15 +46,14 @@ namespace api.Models
             // 
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.CommandText = @"Insert INTO exercises(Title,Distance,Day,Pinned) VALUES(@title,@distance,@day,@pinned)";
+            cmd.CommandText = @"Insert INTO exercises(Title,Distance,Day) VALUES(@title,@distance,@day)";
             cmd.Parameters.AddWithValue("@title", exercise.Title);
             cmd.Parameters.AddWithValue("@distance", exercise.Distance);
             cmd.Parameters.AddWithValue("@day", exercise.Day);
-            cmd.Parameters.AddWithValue("@pinned", exercise.Pinned);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
-            Console.WriteLine("Itsworking");
+
 
 
         }
@@ -65,7 +66,22 @@ namespace api.Models
             con.Open();
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.CommandText = @"UPDATE exercises SET pinned = !pinned WHERE exerciseId = @id";
+            cmd.CommandText = @"UPDATE exercises SET pinned = !pinned WHERE id = @id";
+
+            cmd.Parameters.AddWithValue("@id", exercise.Id);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+        public void handleDelete(Exercise exercise)
+        {
+            ConnectionString db = new ConnectionString();
+            using var con = new MySqlConnection(db.cs);
+            string stm = @"Select * from exercises;";
+            con.Open();
+
+            using var cmd = new MySqlCommand(stm, con);
+            cmd.CommandText = @"UPDATE exercises SET deleted = !deleted WHERE id = @id";
 
             cmd.Parameters.AddWithValue("@id", exercise.Id);
             cmd.Prepare();

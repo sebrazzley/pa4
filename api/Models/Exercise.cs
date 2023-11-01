@@ -9,6 +9,7 @@ namespace api.models
 
         public string Distance { get; set; }
         public string Day { get; set; }
-        public bool Pinned { get; set; }
+        public bool pinned { get; set; }
+        public bool deleted { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sherl\\mis321\\pa4\\pa4.csproj": {}
+    "C:\\Users\\sherl\\MIS321\\pa4\\pa4.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sherl\\mis321\\pa4\\pa4.csproj": {
+    "C:\\Users\\sherl\\MIS321\\pa4\\pa4.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sherl\\mis321\\pa4\\pa4.csproj",
+        "projectUniqueName": "C:\\Users\\sherl\\MIS321\\pa4\\pa4.csproj",
         "projectName": "pa4",
-        "projectPath": "C:\\Users\\sherl\\mis321\\pa4\\pa4.csproj",
+        "projectPath": "C:\\Users\\sherl\\MIS321\\pa4\\pa4.csproj",
         "packagesPath": "C:\\Users\\sherl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sherl\\mis321\\pa4\\obj\\",
+        "outputPath": "C:\\Users\\sherl\\MIS321\\pa4\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sherl\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -64,8 +64,11 @@ namespace api.Controllers
         // DELETE: api/exercises/5
         //will be for delete duh
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, [FromBody] Exercise value)
         {
+            ExerciseUtility utility5 = new ExerciseUtility();
+            utility5.handleDelete(value);
+
         }
     }
 }
