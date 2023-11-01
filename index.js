@@ -56,7 +56,6 @@ function populateTable() {
                 <!-- repeat as many cols as the number of headers -->
              </colgroup>
             <tr>
-            <th style="width:20%"> ID</th>
               <th style="width:20%">ACTIVITY TYPE</th>
               <th style="width:15%">DISTANCE (IN MILES)</th>
               <th style="width:15%">DATE COMPLETED</th>
@@ -76,7 +75,6 @@ function populateTable() {
     }
 
     html += `<tr>
-        <td>${exercise.id}</td>
         <td>${exercise.title}</td>
         <td>${exercise.distance}</td>
         <td>${exercise.day}</td>

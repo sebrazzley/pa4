@@ -13,7 +13,7 @@ namespace api.Models
 
             using var con = new MySqlConnection(db.cs);
             con.Open();
-            string stm = "Select * from exercises;";
+            string stm = "Select * from exercises ORDER BY Day DESC;";
             using var cmd = new MySqlCommand(stm, con);
 
 
@@ -34,6 +34,11 @@ namespace api.Models
             }
             con.Close();
             return myExercises;
+
+        }
+
+        public void sortExercise(Exercise[] myexercises)
+        {
 
         }
 
